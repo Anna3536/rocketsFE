@@ -19,6 +19,7 @@ class Rocket{
         return `Rocket ${this.code}: ${this.maxPower} has ${this.thursters} thursters.`;
     }
 
+
     getActualPower(){
        return this.actualPower; 
     }

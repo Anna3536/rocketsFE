@@ -12,9 +12,8 @@ a:hover {
     text-decoration: none;
 }
 
-.card-header1 {
-    text-align: center;
-    text-transform: uppercase;
+.alto {
+    min-height: 437px;
 }
 
 .card ul li {
@@ -26,13 +25,9 @@ a:hover {
 }
 
 .card-body1 {
-    height: 105px;
+    height: 110px;
 }
 
 .card-body2 {
-    height: 140px;
-}
-
-.card-body3 {
-    height: 130px;
+    min-height: 220px;
 }

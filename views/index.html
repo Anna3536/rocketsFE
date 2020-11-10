@@ -24,84 +24,123 @@
 </head>
 
 <body>
-    <div class="container"></div>
+    <div class="container">
 
-    <div class="row">
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="h4 ml-3">Actions:</h1>
+                    </div>
+                    <ul class="list-group list-group-flush d-flex flex-row justify-content-center">
+                        <li class="list-group-item" id="create_rocket"><a class="mt-2" href="#" onclick="createRocket()">Create Rocket 1 & 2</a></li>
+                        <li class="list-group-item"><a class="mt-3" href="#" onclick="accelerateRocket()">Accelerate Rocket</a></li>
+                        <li class="list-group-item"><a class="mt-3" href="#" onclick="breakRocket()">Break Rocket</a></li>
+                        <li class="list-group-item"><a class="mt-3" href="#" data-toggle="modal" data-target="#ventanaModal" onclick="printRocket()">Print Rocket</a></li>
+                        <li class="list-group-item"><a class="mt-3" href="#" data-toggle="modal" data-target="#ventanaModalAllRockets" onclick="printAllRockets()">Print all Rockets</a></li>
 
-        <div class="card mt-4 ml-5 mb-5" style="width: 18rem;">
-            <div class="card-header card-header1">
-                Actions:
+                    </ul>
+                </div>
             </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a class="mt-2" href="#" onclick="createRocket('32WESSDS', 3, [10,30,80])">CreateRocket 1</a></li>
-                <li class="list-group-item"><a class="mt-2" href="#" onclick="createRocket('LDSF5A32', 6, [30,40,50,50,30,10])">CreateRocket 2</a></li>
-                <li class="list-group-item"><a class="mt-3" href="#" onclick="accelerateRocket('32WESSDS')">Accelerate Rocket1</a></li>
-                <li class="list-group-item"><a class="mt-3" href="#" onclick="accelerateRocket('LDSF5A32')">Accelerate Rocket2</a></li>
-                <li class="list-group-item"><a class="mt-3" href="#" onclick="breakRocket('32WESSDS')">Break Rocket1</a></li>
-                <li class="list-group-item"><a class="mt-3" href="#" onclick="breakRocket('LDSF5A32')">Break Rocket2</a></li>
-                <li class="list-group-item"><a class="mt-3" href="#" onclick="printRocket('32WESSDS')">Print Rocket1</a></li>
-                <li class="list-group-item"><a class="mt-3" href="#" onclick="printRocket('LDSF5A32')">Print Rocket2</a></li>
-                <li class="list-group-item"><a class="mt-3" href="#" onclick="printAllRockets()">Print all Rockets</a></li>
-            </ul>
         </div>
 
-        <div class="col-8">
 
-            <div class="card mt-4">
-                <div class="card-header">
-                    <h1 class="h4 ml-3">Rockets!</h1>
-                </div>
-                <div class="card-body card-body1 mb-1">
-                    <form method="post" class="d-flex flex-row" id="form_rocket">
-                        <div class="form-group d-flex flex-column col-3">
-                            <input type="text" class="form-control" placeholder="Code" name="coderocket" id="coderocket">
-                            <div class="invalid-feedback" id="errorCode"></div>
-                        </div>
-                        <div class="form-group d-flex flex-column col-3">
-                            <input type="text" class="form-control" placeholder="Thursters" name="thurstersrocket" id="thurstersrocket">
-                            <div class="invalid-feedback" id="errorThursters"></div>
-                        </div>
-                        <div class="form-group d-flex flex-column col-3">
-                            <input type="text" class="form-control" placeholder="Max Power" name="maxpowerrocket" id="maxpowerrocket">
-                            <div class="invalid-feedback" id="errorMaxPower"></div>
-                        </div>
-                        <div class="form-group d-flex flex-column col-2">
-                            <a class="btn btn-primary text-white" onclick="createRocketByForm()">Rocket</a>
-                        </div>
-                    </form>
+        <div class="row mt-3">
+
+            <div class="col-4">
+
+                <div class="card mb-5">
+                    <div class="card-body alto overflow-hidden">
+                        <div class="row mt-2 ml-5"></div>
+                        <div class="col-10" id="rocketInfo"></div>
+                    </div>
+
+
                 </div>
 
             </div>
-            <div class="card mt-3">
 
-                <div class="card-body card-body2 overflow-auto mb-5">
-                    <div class="row d-flex flex-column align-items-center">
-                        <div class="col-10" id="coet">
+
+            <div class="col-8">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="h4 ml-3">Rockets!</h1>
+                    </div>
+                    <div class="card-body card-body1">
+                        <form method="POST " action="#" class="d-none" id="form_rocket">
+                            <div class="d-flex flex-row">
+                                <div class="form-group d-flex flex-column col-3">
+                                    <input type="text" class="form-control" placeholder="Code" name="coderocket" id="coderocket">
+                                    <div class="invalid-feedback" id="errorCode"></div>
+                                </div>
+                                <div class="form-group d-flex flex-column col-3">
+                                    <input type="text" class="form-control" placeholder="Thursters" name="thurstersrocket" id="thurstersrocket">
+                                    <div class="invalid-feedback" id="errorThursters"></div>
+                                </div>
+                                <div class="form-group d-flex flex-column col-3">
+                                    <input type="text" class="form-control" placeholder="Max Power" name="maxpowerrocket" id="maxpowerrocket">
+                                    <div class="invalid-feedback" id="errorMaxPower"></div>
+                                </div>
+                                <div class="form-group d-flex flex-column col-2">
+                                    <a class="btn btn-primary text-white" onclick="createRocket()">Rocket</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+
+
+                <div class="card mt-3">
+
+                    <div class="card-body card-body2 overflow-hidden mb-5">
+                        <div class="row d-flex flex-column align-items-center">
+                            <div class="col-10" id="coet">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card mt-3 mb-5">
-                <div class="card-body card-body3 overflow-auto mb-5">
-                    <div class="row mt-2 ml-5"></div>
-                    <div class="col-8" id="rocketInfo"></div>
-                </div>
-
-
 
             </div>
-
-
-
 
         </div>
 
 
+        <div class="modal" id="ventanaModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 id="numeroDeRocket">Rocket:</h3>
+                        <button class="close" data-dismiss="modal" aria-label="Cerrar"></button>
+                        <span aria-hidden="true">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div id="printRocketInfo"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
+        <div class="modal" id="ventanaModalAllRockets" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>All rockets:</h3>
+                        <button class="close" data-dismiss="modal" aria-label="Cerrar"></button>
+                        <span aria-hidden="true">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div id="printAllRocketsInfo"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <script src="../models/rocket.js"></script>
-        <script src="../controllers/controller.js"></script>
+        <script src="../models/rocket.js "></script>
+        <script src="../controllers/controller.js "></script>
 
 
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->

@@ -2,34 +2,25 @@
 let rocket;
 let rockets = [];
 const form = document.getElementById("form_rocket");
-function createRocket(code, thursters, maxPower) {
-    if (code == 'LDSF5A32' && rocket == undefined) {
-        alert("Crea rocket1");
-    }
-    else {
-        let existe = existeRocket(code);
-        if (existe === true) {
-            alert("Este rocket ya existe!");
-        }
-        else if (existe === false) {
-            let coet = new Rocket(code, thursters, maxPower);
-            rockets.push(coet);
-            console.log(coet);
-            console.log(rockets);
-            rocket = coet;
-            let i;
-            i = rocketVerifyIndex(rocket.code);
-            createProgressBar(i);
-        }
-    }
-}
-function createRocketByForm() {
-    let existe = false;
-    if (rocket == undefined) {
-        alert("Crea rocket 1");
+function createRocket() {
+    let i = rockets.length;
+    if (rockets.length === 0) {
+        let coet = new Rocket('32WESSDS', 3, [10, 30, 80]);
+        rockets.push(coet);
+        console.log(coet);
+        console.log(rockets);
+        rocket = coet;
+        createProgressBar(i);
     }
     else if (rockets.length === 1) {
-        alert("Crea rocket 2");
+        let coet = new Rocket('LDSF5A32', 6, [30, 40, 50, 50, 30, 10]);
+        rockets.push(coet);
+        console.log(coet);
+        console.log(rockets);
+        rocket = coet;
+        createProgressBar(i);
+        document.getElementById("create_rocket").classList.add("d-none");
+        form.classList.remove("d-none");
     }
     else if (rockets.length >= 2) {
         let code = document.getElementById("coderocket").value;
@@ -39,19 +30,17 @@ function createRocketByForm() {
         let maxPower = maxPower_form.split(",").map(Number);
         let rocketvalidate = validateRocket(code, thursters_form, maxPower_form);
         if (rocketvalidate === true) {
-            existe = existeRocket(code);
-            if (existe === true) {
-                alert("Este rocket ya existe!");
-            }
-            else {
+            let existe = existeRocket(code);
+            if (existe === false) {
                 let coet = new Rocket(code, thursters, maxPower);
                 rockets.push(coet);
                 console.log(coet);
                 console.log(rockets);
                 rocket = coet;
-                let i;
-                i = rocketVerifyIndex(rocket.code);
-                alert(`rocket${(i + 1)} creado!`);
+                createProgressBar(i);
+            }
+            else if (existe === true) {
+                alert(`rocket ya esta creado!`);
             }
         }
     }
@@ -59,18 +48,23 @@ function createRocketByForm() {
 function existeRocket(code) {
     let existe = false;
     for (let i = 0; i < rockets.length; i++) {
-        if (rockets[i].code === code) {
+        if (rockets[i].code == code) {
             existe = true;
         }
     }
     return existe;
 }
-function rocketVerifyIndex(code) {
+function VerifyRocket() {
+    let progressbar;
+    let numRocket = 0;
     for (let i = 0; i < rockets.length; i++) {
-        if (rockets[i].code === code) {
-            return i;
+        progressbar = document.getElementsByName("progressbar");
+        if (progressbar[i].checked == true) {
+            console.log(progressbar);
+            numRocket = i;
         }
     }
+    return numRocket;
 }
 function validateRocket(code, thursters_form, maxPower_form) {
     let acumErrores = 0;
@@ -152,46 +146,37 @@ function createProgressBar(i) {
     progressbar.innerHTML = ` 
         <div class="col-12">
             <label>Rocket ${(i + 1)}:</label>
-            <div class="progress">
+            <input name="progressbar" type="radio" checked><div class="progress">
             <div id="progress-bar${(i + 1)}" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
             </div>
+            </input>
         </div>
     `;
     console.log(progressbar);
     progressInfo === null || progressInfo === void 0 ? void 0 : progressInfo.appendChild(progressbar);
 }
-function accelerateRocket(code) {
-    let i;
-    i = rocketVerifyIndex(code);
+function accelerateRocket() {
+    let i = VerifyRocket();
     rocket = rockets[i];
-    if (rocket == undefined) {
-        alert("Primero tienes que crear el rocket");
+    if (JSON.stringify(rocket.getActualPower()) == JSON.stringify(rocket.getMaxPower())) {
+        console.log(JSON.stringify(rocket.getActualPower()));
+        console.log(JSON.stringify(rocket.getMaxPower()));
+        alert("La aceleracion esta al maximo!");
     }
     else {
-        if (JSON.stringify(rocket.getActualPower()) == JSON.stringify(rocket.getMaxPower())) {
-            console.log(JSON.stringify(rocket.getActualPower()));
-            console.log(JSON.stringify(rocket.getMaxPower()));
-            alert("La aceleracion esta al maximo!");
-        }
-        else {
-            let rocketInfo = document.getElementById("rocketInfo");
-            let element = document.createElement('div');
-            element.innerHTML = `<div>Actual Power Rocket${(i + 1)}: ${rocket.accelerar()}</div>`;
-            console.log(element);
-            rocketInfo === null || rocketInfo === void 0 ? void 0 : rocketInfo.appendChild(element);
-            pintarProgressBar(i);
-        }
+        let rocketInfo = document.getElementById("rocketInfo");
+        let element = document.createElement('div');
+        element.innerHTML = `<div>Actual Power Rocket${(i + 1)}: ${rocket.accelerar()}</div>`;
+        console.log("element:", element);
+        rocketInfo === null || rocketInfo === void 0 ? void 0 : rocketInfo.appendChild(element);
+        pintarProgressBar(i);
     }
 }
-function breakRocket(code) {
-    let i;
-    i = rocketVerifyIndex(code);
+function breakRocket() {
+    let i = VerifyRocket();
     rocket = rockets[i];
-    let breakRocket = isBreak(rocket);
-    if (rocket == undefined) {
-        alert("Primero tienes que crear el rocket");
-    }
-    else if ((rocket.getActualPower()).length === 0) {
+    let breakRocket = isBreak(i);
+    if ((rocket.getActualPower()).length === 0) {
         alert("Para frenar es necesario acelerar!!!");
     }
     else {
@@ -208,7 +193,8 @@ function breakRocket(code) {
         }
     }
 }
-function isBreak(rocket) {
+function isBreak(i) {
+    rocket = rockets[i];
     let count = 0;
     let potencia = rocket.getMaxPower();
     let breakRocket = rocket.getActualPower();
@@ -224,36 +210,32 @@ function isBreak(rocket) {
         return false;
     }
 }
-function printRocket(code) {
-    let i;
-    i = rocketVerifyIndex(code);
+function printRocket() {
+    let i = VerifyRocket();
+    rocket = rockets[i];
     rocket = rockets[i];
     if (rocket == undefined) {
-        alert("Primero tienes que crear el rocket");
+        document.getElementById("printRocketInfo").innerHTML = `Por el momento no hay rockets`;
     }
-    let rocketInfo = document.getElementById("rocketInfo");
-    let element = document.createElement('div');
-    element.innerHTML = `<div>${rocket.toString()}</div>`;
-    console.log(element);
-    rocketInfo === null || rocketInfo === void 0 ? void 0 : rocketInfo.appendChild(element);
+    else {
+        document.getElementById("numeroDeRocket").innerHTML = `Rocket${i + 1}`;
+        document.getElementById("printRocketInfo").innerHTML = `
+        <div>${rocket.toString()}</div>
+       `;
+    }
 }
 function printAllRockets() {
     if (rockets.length == 0) {
-        alert("Primero tienes que crear un rocket");
+        document.getElementById("printAllRocketsInfo").innerHTML = `Por el momento no hay rockets`;
     }
     else {
-        let rocketInfo = document.getElementById("rocketInfo");
-        let element = document.createElement('div');
-        element.innerHTML = `<div>All rockets:</div>`;
-        console.log(element);
-        rocketInfo === null || rocketInfo === void 0 ? void 0 : rocketInfo.appendChild(element);
+        let printarAllRocketsInfo = document.getElementById("printAllRocketsInfo");
+        let pintar = "";
         for (let j = 0; j < rockets.length; j++) {
-            let rocketInfo = document.getElementById("rocketInfo");
-            let element = document.createElement('div');
-            element.innerHTML = `<li>${rockets[j].toString()}</li>`;
-            console.log(element);
-            rocketInfo === null || rocketInfo === void 0 ? void 0 : rocketInfo.appendChild(element);
+            console.log(rockets);
+            pintar += `<li>${rockets[j].toString()}</li>`;
         }
+        printarAllRocketsInfo.innerHTML = pintar;
     }
 }
 function pintarProgressBar(i) {
